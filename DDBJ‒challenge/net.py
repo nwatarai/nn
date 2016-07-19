@@ -18,12 +18,12 @@ class SimpleCNN(Chain):
 
     def __call__(self, x):
         h1 = F.max_pooling_2d(F.relu(self.conv1(x)), self.n_kernel)
-        h2 = F.dropout(F.relu(self.l1(h1)))
+        h2 = F.dropout(F.relu(self.l1(h1)),ratio=0.3)
         y = self.l2(h2)
-        return softmax(y)
+        return y
 
     def predict(self, x):
         h1 = F.max_pooling_2d(F.relu(self.conv1(x)), self.n_kernel)
-        h2 = F.dropout(F.relu(self.l1(h1)))
+        h2 = F.relu(self.l1(h1))
         y = self.l2(h2)
         return softmax(y)
