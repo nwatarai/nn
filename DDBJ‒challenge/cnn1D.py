@@ -11,16 +11,11 @@ import argparse
 from scipy import io
 import sys
 import pickle
-data = io.loadmat(sys.argv[1])
-#print data['seq_tr'].shape
-#print data['seq_te'].shape
-#print data['out_tr'].shape
 
 # args
 parser = argparse.ArgumentParser()
 parser.add_argument('--input  '    , dest='input'        , type=str, default=None,            help='input file')
 parser.add_argument('--gpu  '    , dest='gpu'        , type=int, default=0,            help='1: use gpu, 0: use cpu')
-parser.add_argument('--data '    , dest='data'       , type=str, default='input.dat',  help='an input data file')
 parser.add_argument('--epoch'    , dest='epoch'      , type=int, default=100,          help='number of epochs to learn')
 parser.add_argument('--batchsize', dest='batchsize'  , type=int, default=100,           help='learning minibatch size')
 parser.add_argument('--nunits'   , dest='nunits'     , type=int, default=400,          help='number of units')
@@ -28,7 +23,12 @@ parser.add_argument('--k'   , dest='k'     , type=int, default=4,          help=
 
 args = parser.parse_args()
 batchsize   = args.batchsize  
-n_epoch     = args.epoch       
+n_epoch     = args.epoch
+data = io.loadmat(args.input)
+#print data['seq_tr'].shape
+#print data['seq_te'].shape
+#print data['out_tr'].shape
+
 
 # Prepare dataset
 X_train = data['seq_tr'].astype(np.float32)
@@ -111,5 +111,5 @@ for epoch in six.moves.range(1, n_epoch + 1):
         print 'learning rate: ', optimizer.lr
 
 model.to_cpu()
-pickle.dump(model, open(args.input+"cnn.model", 'wb'), -1)
+pickle.dump(model, open(args.input +"."+ args.k +".cnn.model", 'wb'), -1)
 
