@@ -19,8 +19,8 @@ class SimpleCNN(Chain):
 
     def __call__(self, x):
         h1 = F.max_pooling_2d(F.relu(self.conv1(x)), self.n_kernel)
-        h1_2 = F.dropout(F.relu(self.l1_2(h1)),ratio=0.5)
         h2 = F.dropout(F.relu(self.l1(h1_2)),ratio=0.3)
+        h1_2 = F.dropout(F.relu(self.l1_2(h1)),ratio=0.1)
         y = self.l2(h2)
         return y
 
